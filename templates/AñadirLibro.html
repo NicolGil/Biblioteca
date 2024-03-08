@@ -1,0 +1,38 @@
+{% extends './base.html' %}
+
+{% block title%} Añadir libro {% endblock %}
+
+
+{% block body %}
+
+<ul>
+    <form method="post" action="/storeLibros" enctype="multipart/form-data">
+
+        ID:
+       <input type="text" name="txtID" id="txtID"> 
+        <br>
+    
+       ISBN:
+       <input type="text" name="txtISBN" id="txtISBN">
+        <br>
+    
+        Titulo:
+       <input type="text" name="txtTitulo" id="txtTitulo"> 
+        <br>
+    
+        Autor:
+       <input type="text" name="txtAutor" id="txtAutor">
+        <br>
+
+        Genero:
+        <input type="text" name="txtGenero" id="txtGenero"> 
+         <br>
+    
+         <input type="submit" value="guardar">
+     
+    
+    </form>
+<br>
+<br>
+
+{% endblock %}

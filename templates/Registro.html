@@ -1,0 +1,38 @@
+{% extends './base.html' %}
+
+{% block title%} registros de biblioteca {% endblock %}
+
+{% block body %}
+
+<table class="table table-ligh">
+    <thead class="thead-ligh">
+        <tr>
+            <th>#</th>
+            <th>ISBN</th>
+            <th>Titulo</th> 
+            <th>Autor</th>
+            <th>Genero</th>
+            <th>Acciones</th>
+    
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for libro in libros %}
+        <tr>
+            <td>{{ libro.id }}</td>
+            <td>{{ libro.isbn }}</td>
+            <td>{{ libro.titulo }}</td>
+            <td>{{ libro.autor }}</td>
+            <td>{{ libro.genero }}</td>
+            <td>
+                <a href="/destroy/{{ libro.id }}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+        
+    </tbody>
+</table>
+
+{% endblock %}

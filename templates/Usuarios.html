@@ -1,0 +1,30 @@
+{% extends './base.html' %}
+
+{% block title%} Usuarios {% endblock %}
+
+{% block body %}
+
+<table class="table table-ligh">
+    <thead class="thead-ligh">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Email</th> 
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>
+                <a href="/destroyUsuarios/{{ usuario.id }}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
