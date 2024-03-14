@@ -1,7 +1,9 @@
-from flask import Flask, render_template,request, redirect, url_for
+from flask import Flask, render_template,request
 from sqlalchemy.orm import Mapped, mapped_column,DeclarativeBase
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime, timezone
+from sqlalchemy import DateTime
 
 class Base(DeclarativeBase):
     pass
@@ -25,6 +27,21 @@ class Usuarios(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(db.String(255))
     email: Mapped[str] = mapped_column(db.String(255))
+
+
+
+
+class Prestamos(db.Model):
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
+    id_libro : Mapped[int] = mapped_column(db.Integer, db.ForeignKey('libros.id'))
+    id_usuario : Mapped[int] = mapped_column(db.Integer, db.ForeignKey('usuarios.id'))
+    fecha_prestamo = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
+    fecha_devolucion = mapped_column(DateTime)
+
+
+    libro = db.relationship('Libros', backref='prestamos')
+    usuario = db.relationship('Usuarios', backref='prestamos')
+
 
 @web.route('/')
 def principal():
@@ -101,17 +118,59 @@ def usuario():
   usuarios = Usuarios.query.all()
   return render_template('Usuarios.html', usuarios=usuarios)
 
-@web.route('/Devolver_libro')
+
+@web.route('/devolver_libro', methods=['GET', 'POST'])
 def devolver_libro():
-    return render_template('Devolverlibro.html')
+    if request.method == 'GET':
+        prestamos = Prestamos.query.all()
+        return render_template('devolverLibro.html', prestamos=prestamos)
+    elif request.method == 'POST':
+        prestamo_id = request.form['prestamo_id']
+        prestamo = Prestamos.query.get(prestamo_id)
+        if prestamo:
+            db.session.delete(prestamo)
+            db.session.commit()
+            return f'El libro ha sido devuelto correctamente.'
+        else:
+            return 'No se encontró el préstamo.'
+
 
 @web.route('/libros_con_retraso')
 def libros_retraso():
-    return render_template('LibrosRetraso.html')
+    libros_con_retraso = []
+    prestamos = Prestamos.query.all()
+    fecha_actual = datetime.now(timezone.utc)  
+    for prestamo in prestamos:
+        if prestamo.fecha_devolucion.replace(tzinfo=timezone.utc) < fecha_actual:
+            libros_con_retraso.append((prestamo.libro, prestamo.fecha_devolucion))  
+    return render_template('LibrosRetraso.html', libros_con_retraso=libros_con_retraso)
 
 @web.route('/Solicitar_prestamo')
 def prestamo_libro():
     return render_template('PrestamoLibro.html')
+
+@web.route('/prestamosulicitud', methods=['POST'])
+def solicitar_prestamo():
+    id_libro = request.form['id_libro']
+    id_usuario = request.form['id_usuario']
+    fecha_devolucion = datetime.strptime(request.form['fecha_devolucion'], '%Y-%m-%d')
+    libro = Libros.query.get(id_libro)
+    usuario = Usuarios.query.get(id_usuario)
+
+    if libro and usuario:
+        if len(libro.prestamos) == 0:  
+            nuevo_prestamo = Prestamos(id_libro=id_libro, id_usuario=id_usuario, fecha_devolucion=fecha_devolucion)
+            db.session.add(nuevo_prestamo)
+            try:
+                db.session.commit()
+                return f'El usuario {usuario.nombre} ha tomado prestado el libro "{libro.titulo}" correctamente.'
+            except Exception as e:
+                db.session.rollback()
+                return f'Error al solicitar préstamo: {str(e)}'
+        else:
+            return f'El libro "{libro.titulo}" no está disponible en este momento.'
+    else:
+        return 'Libro o usuario no encontrado.'
 
 @web.route('/registros_de_biblioteca')
 def registro():

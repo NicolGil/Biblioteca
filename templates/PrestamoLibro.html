@@ -2,3 +2,21 @@
 
 {% block title%} Solicitar prestamo {% endblock %}
 
+{% block body %}
+
+<form method="POST" action="/prestamosulicitud">
+    <label for="id_libro">ID del libro:</label>
+    <input type="text" name="id_libro" id="id_libro">
+    
+    <label for="id_usuario">ID del usuario:</label>
+    <input type="text" name="id_usuario" id="id_usuario">
+
+    <label for="fecha_devolucion">Fecha de devolución:</label>
+    <input type="date" name="fecha_devolucion" id="fecha_devolucion">
+    
+    <button type="submit">Solicitar préstamo</button>
+</form>
+
+
+
+{% endblock %}
