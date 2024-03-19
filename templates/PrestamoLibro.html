@@ -4,19 +4,22 @@
 
 {% block body %}
 
-<form method="POST" action="/prestamosulicitud">
-    <label for="id_libro">ID del libro:</label>
+<div class="container">
+    <h2 class="title">Solicitar prestamo</h2>
+    <form method="post" action="/prestamosulicitud" enctype="multipart/form-data">
+
+    <label for="id_libro">ID del libro</label>
     <input type="text" name="id_libro" id="id_libro">
-    
-    <label for="id_usuario">ID del usuario:</label>
+
+    <label for="id_usuario">ID del usuario</label>
     <input type="text" name="id_usuario" id="id_usuario">
 
-    <label for="fecha_devolucion">Fecha de devolución:</label>
+    <label for="fecha_devolucion">Fecha de devolución </label>
     <input type="date" name="fecha_devolucion" id="fecha_devolucion">
     
-    <button type="submit">Solicitar préstamo</button>
-</form>
+    <button type="submit"  class="btn">Solicitar préstamo </button>
 
-
+  </form>
+</div>
 
 {% endblock %}

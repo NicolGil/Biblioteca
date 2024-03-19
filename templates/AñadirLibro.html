@@ -1,38 +1,45 @@
 {% extends './base.html' %}
 
-{% block title%} Añadir libro {% endblock %}
+{% block title %} Añadir libro {% endblock %}
 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+{% endblock %}
 
 {% block body %}
-
-<ul>
+<div class="container">
+    <h2 class="title">Añadir Libro</h2>
     <form method="post" action="/storeLibros" enctype="multipart/form-data">
-
-        ID:
-       <input type="text" name="txtID" id="txtID"> 
-        <br>
-    
-       ISBN:
-       <input type="text" name="txtISBN" id="txtISBN">
-        <br>
-    
-        Titulo:
-       <input type="text" name="txtTitulo" id="txtTitulo"> 
-        <br>
-    
-        Autor:
-       <input type="text" name="txtAutor" id="txtAutor">
-        <br>
-
-        Genero:
-        <input type="text" name="txtGenero" id="txtGenero"> 
-         <br>
-    
-         <input type="submit" value="guardar">
-     
-    
+        <ul class="form-list">
+            <li>
+                <label for="txtID">ID</label>
+                <br>
+                <input type="text" name="txtID" id="txtID">
+            </li>
+            <li>
+                <label for="txtISBN">ISBN</label>
+                <br>
+                <input type="text" name="txtISBN" id="txtISBN">
+            </li>
+            <li>
+                <label for="txtTitulo">Título</label>
+                <br>
+                <input type="text" name="txtTitulo" id="txtTitulo">
+            </li>
+            <li>
+                <label for="txtAutor">Autor</label>
+                <br>
+                <input type="text" name="txtAutor" id="txtAutor">
+            </li>
+            <li>
+                <label for="txtGenero">Género</label>
+                <br>
+                <input type="text" name="txtGenero" id="txtGenero">
+            </li>
+            <li>
+                <input type="submit" value="Guardar" class="btn">
+            </li>
+        </ul>
     </form>
-<br>
-<br>
-
+</div>
 {% endblock %}
