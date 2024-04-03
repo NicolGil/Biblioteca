@@ -1,0 +1,27 @@
+
+{% block title%} Registrar usuario {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h2 class="title">Registrar usuario</h2>
+    <form method="post" action="/storeUsuarios" enctype="multipart/form-data">
+        <ul class="form-list">
+            <li>
+                <label for="txtNombre">nombre</label>
+                <br>
+                <input type="text" name="txtNombre" id="txtNombre">
+            </li>
+            <li>
+                <label for="txtEmail">Email</label>
+                <br>
+                <input type="text" name="txtEmail" id="txtEmail">
+                <li>
+                    <input type="submit" value="Guardar" class="btn">
+                </li>
+            </ul>
+        </form>
+    </div>
+
+
+{% endblock %}
