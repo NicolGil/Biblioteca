@@ -1,0 +1,25 @@
+{% extends './base.html' %}
+
+{% block title%} Solicitar prestamo {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h2 class="title">Solicitar prestamo</h2>
+    <form method="post" action="/prestamosulicitud" enctype="multipart/form-data">
+
+    <label for="id_libro">ID del libro</label>
+    <input type="text" name="id_libro" id="id_libro">
+
+    <label for="id_usuario">ID del usuario</label>
+    <input type="text" name="id_usuario" id="id_usuario">
+
+    <label for="fecha_devolucion">Fecha de devolución </label>
+    <input type="date" name="fecha_devolucion" id="fecha_devolucion">
+    
+    <button type="submit"  class="btn">Solicitar préstamo </button>
+
+  </form>
+</div>
+
+{% endblock %}
