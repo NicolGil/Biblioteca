@@ -1,22 +1,28 @@
-from flask import Flask, render_template,request
+from collections.abc import Sequence
+from typing import Any, Mapping
+from flask import Flask, render_template,request, redirect, url_for
 from sqlalchemy.orm import Mapped, mapped_column,DeclarativeBase
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timezone
 from sqlalchemy import DateTime
-import flask_login
+
 
 
 class Base(DeclarativeBase):
     pass
 db = SQLAlchemy(model_class=Base)
 
+
+
 class Biblioteca:
     def __init__(self):
         self.web = Flask(__name__)
         self.web.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.mszzaqinklhbntpvovzr:lYSZK6SwjVvGusWQ@aws-0-us-west-1.pooler.supabase.com:5432/postgres?client_encoding=utf8'
         db.init_app(self.web)
+        
       
+
 
         class Libros(db.Model):
             id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
@@ -40,6 +46,8 @@ class Biblioteca:
             usuario = db.relationship('Usuarios', backref='prestamos')
 
        
+
+
         @self.web.route('/')
         def principal():
             return render_template('index.html')
@@ -171,6 +179,7 @@ class Biblioteca:
         def registro():
             libros = Libros.query.all()  
             return render_template('Registro.html', libros=libros)
+            
 
     def run(self):
         with self.web.app_context():
